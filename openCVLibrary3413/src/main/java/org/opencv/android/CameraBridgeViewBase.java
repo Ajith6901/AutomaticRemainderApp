@@ -413,16 +413,21 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
             // now you hava to scale frame according to your phone
             float mScale1=0;
             float mScale2=0;
+
+
+            /**
+            * I did some changes in the below if condition
+             **/
             if(canvas.getHeight()>canvas.getWidth()){
                 canvas.rotate(90f,canvas.getWidth()/2,canvas.getHeight()/2);
                 // for my Phone my scale values are
-                mScale1=1.8f;
-                mScale2=1.5f;
+                mScale1=(float)canvas.getHeight()/(float)mCacheBitmap.getWidth();
+                mScale2=(float)canvas.getWidth()/(float)mCacheBitmap.getHeight();
 
             }
             else{
-                mScale1=1.4f;
-                mScale2=1.3f;
+                mScale1=(float)canvas.getWidth()/(float)mCacheBitmap.getWidth();
+                mScale2=(float)canvas.getHeight()/(float)mCacheBitmap.getHeight();
             }
 
 
