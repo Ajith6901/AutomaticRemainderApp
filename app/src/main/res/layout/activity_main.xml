@@ -32,13 +32,12 @@
         android:textSize="10dp"/>
 
 
-
     <TextView
         android:id="@+id/endTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="end time"
-        android:textSize="10dp"/>
+        android:textSize="10dp" />
 
 
     <TextView
@@ -46,6 +45,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="day"
+        android:textSize="10dp"/>
+
+    <TextView
+        android:id="@+id/roomNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="roomNumber"
+        android:textSize="10dp" />
+
+    <TextView
+        android:id="@+id/block"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="block"
         android:textSize="10dp"/>
 
     <Button

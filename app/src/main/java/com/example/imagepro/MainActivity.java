@@ -19,6 +19,7 @@ import android.widget.Toast;
 import org.opencv.android.OpenCVLoader;
 
 import java.util.Calendar;
+import java.util.regex.*; //for using the java regex
 
 public class MainActivity extends AppCompatActivity {
     static {
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String output;
     private Button camera_button;
-    private TextView title,day,st_time,ed_time;
+    private TextView title,day,st_time,ed_time,roomNumber,blockName;
     private int MyVersion;
     private String start_time;
     private String end_time;
@@ -49,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         day=findViewById(R.id.day);
         st_time=findViewById(R.id.startTime);
         ed_time=findViewById(R.id.endTime);
+        roomNumber=findViewById(R.id.roomNumber);
+        blockName=findViewById(R.id.block);
+
         camera_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +111,29 @@ public class MainActivity extends AppCompatActivity {
 
                 for(int i =0;i<arr.length;i++)
                 {
+
+                    //regex for course name
+
+                    String patternString="[A-Z]+[A-Z]+[A-Z]+[0-9]+[0-9]+[0-9]+[0-9]";
+                    Pattern pattern = Pattern.compile(patternString);
+                    Matcher matcher = pattern.matcher(arr[i]);
+
+                    //regex for room number
+                    String strPattern ="[-]+[0-9]+[0-9]+[0-9]+[-]";
+                    Pattern pattern1 = Pattern.compile(strPattern);
+                    Matcher matcher1 = pattern1.matcher(arr[i]);
+
+                    //regex for block name
+                    String strPattern1 ="[A]+[B]+[-]+[1-2]";
+                    Pattern pattern2 = Pattern.compile(strPattern1);
+                    Matcher mat2 = pattern2.matcher(arr[i]);
+
+
+
                     if(arr[i].contains("MON")){
+                        day.setText(arr[i]);
+                    }
+                    else if(arr[i].contains("TUE")){
                         day.setText(arr[i]);
                     }
                     else if(arr[i].contains("9:00")){
@@ -118,9 +144,40 @@ public class MainActivity extends AppCompatActivity {
                         ed_time.setText("45");
                         end_time="45";
                     }
-                    else if(arr[i].contains("CSE1008")){
-                        title.setText("CSE1008");
-                        eventTitle="CSE1008";
+                    else if(arr[i].contains("09:50")){
+                        ed_time.setText("50");
+                        end_time="50";
+                    }
+                    else if(matcher.find()){
+                        //Title must subject Name ()
+
+                        String str = arr[i];
+                        str=str.substring(matcher.start(),matcher.end());
+                        title.setText(str);
+                        eventTitle=str;
+//                        Log.d("course",str);
+
+
+                    }
+                    else if(matcher1.find()){
+                        //condition for roomnumber
+
+                        String str = arr[i];
+                        str=str.substring(matcher1.start()+1,matcher1.end()-1);
+                        roomNumber.setText(str);
+                        eventTitle+="@"+str;
+//                        Log.d("course",str);
+
+
+                    }
+                    else if(mat2.find())
+                    {
+                        //condition for the block name
+                        String str = arr[i];
+                        str=str.substring(mat2.start(),mat2.end());
+                        blockName.setText(str);
+                        eventTitle+="@"+str;
+//                        Log.d("course",str);
                     }
                 }
 //                title.setText(output);
@@ -140,6 +197,16 @@ public class MainActivity extends AppCompatActivity {
     public  void AddCalendarEvent(View view) {
         Calendar calendarEvent = Calendar.getInstance();
         calendarEvent.set(Calendar.MONTH, 4);
+
+        if(day.getText()=="MON"){
+            calendarEvent.set(Calendar.DAY_OF_MONTH,9);
+        }
+        else if(day.getText()=="TUE"){
+            calendarEvent.set(Calendar.DAY_OF_MONTH,10);
+        }
+        else{
+            calendarEvent.set(Calendar.DAY_OF_MONTH,10);// the default case is tuesday
+        }
         calendarEvent.set(Calendar.DAY_OF_MONTH, 10);
         calendarEvent.set(Calendar.SECOND, 0);
         //the above values are gonna stay default
